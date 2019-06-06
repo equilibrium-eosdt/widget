@@ -13,6 +13,7 @@ export default function WithdrawEOS(deps: { account: Account, contract: Contract
     state: {
       form: Form({
         id: "withdraw-eosdt",
+        className: "form",
         fields: ["amount"],
         handler: async (data?: FormData) => {
           if (data) {

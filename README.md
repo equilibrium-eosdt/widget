@@ -40,6 +40,7 @@ Interface
 
 interface Injector {
   isReady: () => boolean;
+  init: (accountName: string, endpoint: string, onTransaction: (txObj: TxObj, options: TxOpt) => Promise<void>) => void;
   injectEOSClient: (client: Client) => void;
   getContext: () => Context;
   Widgets: {
@@ -49,6 +50,19 @@ interface Injector {
 }
 ```
 - _isReady()_ - returns ready state of widgets(widgets are ready when the client is injected and initialized)
+- _init(accountName: string, endpoint: string, onTransaction: (txObj, txOpt) => Promise<void>)_ - initialize widgets with dummy client, you need to specify your account name, EOS node endpoint and transaction signer
+```typescript
+window.addEventListener('equilibrium:ready'), () => {
+	window.Equilibrium.Widgets.Position(
+		/* target HTMLElement */ document.querySelector("#widget")
+	);
+});
+  
+window.Equilibrium.init('someeosaccnt', 'https://api.eosn.io:443', (txObj, txOpt) => {
+  ...
+  // here you can sign and sent your transactions
+});
+```
 - _injectEOSClient(client: Client)_ - injects EOS Client and fires `equilibrium:ready` event, you can either have your own client implementation based on the interface below, or use bundle with built-in scatter connector
 - _getContext()_ - reurns widget context(interface is described below)
 - _Widgets.Position(el: HTMLElement)_ - mount `Position` widget to DOM Node

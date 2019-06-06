@@ -115,13 +115,19 @@
     <script>
       window.addEventListener('equilibrium:ready', function() {
         window.widget = window.Equilibrium.Widgets.Position(document.querySelector('#position-widget'));
-        window.scatterWidget = window.Equilibrium.Widgets.Scatter(document.querySelector('#scatter-widget'));
       });
+
+      window.addEventListener('equilibrium:loaded', function() {
+        window.Equilibrium.init('ACCOUNT_NAME_', 'https://api.eosn.io', function(tx, opt) {
+          // Sign transaction, etc.
+          console.log({ tx, opt });
+        });
+      })
     </script>
   </head>
   <body>
     <div id="scatter-widget"></div>
     <div id="position-widget"></div>
-    <script async src="./injectScatter.js"></script>
+    <script async src="./inject.js"></script>
   </body>
 </html>

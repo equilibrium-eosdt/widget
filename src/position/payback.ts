@@ -16,6 +16,7 @@ export default function PaybackEOSDT(deps: {
     state: {
       form: Form({
         id: "payback-eosdt",
+        className: "form",
         fields: ["amount"],
         handler: async (data?: FormData) => {
           if (data) {

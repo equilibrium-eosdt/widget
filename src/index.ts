@@ -1,3 +1,4 @@
+import { JsonRpc } from "eosjs";
 import { EventEmitter } from "events";
 import ManagePosition from "./position";
 import { Context, EquilibriumInjector, Client } from "./types";
@@ -53,6 +54,22 @@ const injectPositionWidget = (el: HTMLElement) => {
 
 const Equilibrium: EquilibriumInjector = {
   isReady: () => !!context.client,
+  init: (
+    accountName: string,
+    endpoint: string,
+    onTransaction: (txObj: any, options: any) => Promise<void>,
+  ) => {
+    Equilibrium.injectEOSClient(<any>{
+      getAccount: () => ({
+        name: accountName
+      }),
+      rpc: new JsonRpc(endpoint),
+      api: {
+        transact: async (txObj: any, options: any) =>
+          await onTransaction(txObj, options),
+      },
+    });
+  },
   injectEOSClient: (client: Client) => {
     context.client = client;
     window.dispatchEvent(new Event("equilibrium:ready"));

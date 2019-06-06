@@ -52,8 +52,8 @@ export default function Tabs(params: { tabs: TabItem[], id: string, className?: 
       const tab = tabs[state.tabIndex];
 
       return r`
-  <ul>${tabs.map(({ id, name }, index) => r`
-    <li class="${index === state.tabIndex ? "active " : ""}${id}-tab">
+  <ul class="position-manage__tabs">${tabs.map(({ id, name }, index) => r`
+    <li class="${index === state.tabIndex ? "position-manage__tab--active " : ""}${id}-tab position-manage__tab">
       ${name}
     </li>
 `).join('')}

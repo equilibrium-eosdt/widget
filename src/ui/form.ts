@@ -72,9 +72,9 @@ export default function createForm(params: {
 
     render: (state, r) => {
       return r`
-${state.pending ? "<p>Loading...</p>" : ""}
-${fields.map((name) => `<input class="input" type="text" name="${name}" />`).join("")}
-${state.error ? `<p>${state.error}</p>` : ""}
+${state.pending ? `<p class="position-manage__pending">Loading...</p>` : ""}
+${fields.map((name) => `<input class="input ${state.error && 'input--error'}" type="text" name="${name}" />`).join("")}
+${state.error ? `<p class="position-manage__error">${state.error}</p>` : ""}
 ${state.submitButton}
 `;
     },

@@ -16,6 +16,7 @@ export default function GenerateEOSDT(deps: {
     state: {
       form: Form({
         id: "generate-eosdt",
+        className: "form",
         fields: ["amount"],
         handler: async (data?: FormData) => {
           if (data) {

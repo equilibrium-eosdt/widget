@@ -22,6 +22,11 @@ module.exports = (env, argv) => ({
   },
   plugins: [
     new HTMLPlugin({
+      filename: "example-simple-client.html",
+      template: "example-simple.html",
+      inject: false
+    }),
+    new HTMLPlugin({
       template: "example.html",
       inject: false
     }),

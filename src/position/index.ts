@@ -12,10 +12,10 @@ import PaybackEOSDT from "./payback";
 export interface MPState {
   account?: {
     name: string;
-    authority: string;
-    publicKey: string;
-    blockchain: string;
-    chainId: string;
+    authority?: string;
+    publicKey?: string;
+    blockchain?: string;
+    chainId?: string;
   };
 
   contract?: Contract;
@@ -88,14 +88,14 @@ const ManagePosition: WidgetDef<MPState, Context> = {
     }
 
     if (!Array.isArray(positions) || positions.length < 1) {
-      return r`<h2>Create new position</h2>${{
+      return r`<h2 class="position-manage__title">Create new position</h2>${{
         id: "create-position",
         type: CreatePosition({ account, contract }),
       }}`;
     }
 
     return r`
-  <h2>Manage position of <i>${account.name}</i></h2>
+  <h2 class="position-manage__title">Manage position of <i class="position-manage__username">${account.name}</i></h2>
   ${state.tabs}
 `;
   },

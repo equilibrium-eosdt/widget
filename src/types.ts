@@ -5,11 +5,14 @@ import { Widget } from "./widget";
 
 export interface Account {
   name: string;
-  authority: string;
-  publicKey: string;
-  blockchain: string;
-  chainId: string;
+  authority?: string;
+  publicKey?: string;
+  blockchain?: string;
+  chainId?: string;
 }
+
+type TxObj = any;
+type TxOpt = any;
 
 export { PositionsContract as Contract };
 
@@ -34,6 +37,7 @@ export interface Context {
 
 export interface EquilibriumInjector {
   isReady: () => boolean;
+  init: (accountName: string, endpoint: string, onTransaction: (txObj: TxObj, options: TxOpt) => Promise<void>) => void;
   injectEOSClient: (client: Client) => void;
   getContext: () => Context;
   Widgets: {
