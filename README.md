@@ -2,9 +2,9 @@
 # Equilibrium Framework Widgets
 ## Getting started
 ### VIA npm
-- Install `@eosdt/widgets` package
+- Install `@eosdt/widget` package
 ```bash
-npm i @eosdt/widgets
+npm i @eosdt/widget
 ```
 - In your code:
 ```typescript
