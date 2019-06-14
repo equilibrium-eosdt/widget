@@ -1,3 +1,4 @@
+import { t } from "../globals";
 import { WidgetDef } from "../widget";
 import Form from "../ui/form";
 import { Account, Contract } from "../types";
@@ -22,8 +23,10 @@ export default function CreatePosition(deps: {
       w.update({
         form: Form({
           id: "create-position",
-          className: "form--new-position form",
+          className: "form",
           fields: ["deposit", "generate"],
+          label: ["I want to deposit EOS", "And generate EOSDT"],
+          // buttonText: "Create position",
           handler: async (data?: FormData) => {
             if (data) {
               const [deposit, generate] = [
@@ -40,10 +43,10 @@ export default function CreatePosition(deps: {
                 await contract.create(account.name, deposit, generate);
                 events.emit("position:created");
               } else {
-                throw new Error("Wrong data");
+                throw new Error(t`Wrong data`);
               }
             } else {
-              throw new Error("No data");
+              throw new Error(t`No data`);
             }
           },
         }),

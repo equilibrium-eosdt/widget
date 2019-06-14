@@ -1,9 +1,10 @@
+import { t } from "../globals";
 import { WidgetDef } from "../widget";
 import Form from "../ui/form";
-import { Account, Contract } from "../types";
+import { Account, Context, Contract } from "../types";
 
 export interface PaybackState {
-  form: ReturnType<typeof Form>;
+  form?: ReturnType<typeof Form>;
 }
 
 export default function PaybackEOSDT(deps: {
@@ -12,39 +13,43 @@ export default function PaybackEOSDT(deps: {
 }) {
   const { account, contract } = deps;
 
-  return <WidgetDef<PaybackState, {}>>{
-    state: {
-      form: Form({
-        id: "payback-eosdt",
-        className: "form",
-        fields: ["amount"],
-        handler: async (data?: FormData) => {
-          if (data) {
-            const positions = await contract.getAllUserPositions(account.name);
-            const amount = Number(data.get("amount"));
+  return <WidgetDef<PaybackState, Context>>{
+    state: {},
 
-            if (!positions.length) {
-              throw new Error("No position found");
-            }
-
-            if (Number.isFinite(amount) && amount > 0) {
-              await contract.burnbackDebt(
+    onInit: async (w) => {
+      w.update({
+        form: Form({
+          id: "payback-eosdt",
+          className: "form form--tab",
+          fields: ["amount"],
+          handler: async (data?: FormData) => {
+            if (data) {
+              const positions = await contract.getAllUserPositions(
                 account.name,
-                amount,
-                positions[0].position_id,
               );
-            } else {
-              throw new Error("Wrong data");
-            }
-          } else {
-            throw new Error("No data");
-          }
-        },
-      }),
-    },
+              const amount = Number(data.get("amount"));
 
-    onInit: async () => {
-      console.log(account, contract);
+              if (!positions.length) {
+                throw new Error("No position found");
+              }
+
+              if (Number.isFinite(amount) && amount > 0) {
+                await contract.burnbackDebt(
+                  account.name,
+                  amount,
+                  positions[0].position_id,
+                );
+
+                w.ctx.events.emit("transaction");
+              } else {
+                throw new Error(t`Wrong data`);
+              }
+            } else {
+              throw new Error(t`No data`);
+            }
+          },
+        }),
+      });
     },
 
     render: (state, r) => {

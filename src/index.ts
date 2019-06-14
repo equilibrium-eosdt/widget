@@ -1,5 +1,6 @@
 import { JsonRpc } from "eosjs";
 import { EventEmitter } from "events";
+import { t, setLocale } from "./globals";
 import ManagePosition from "./position";
 import { Context, EquilibriumInjector, Client } from "./types";
 import { Widget, WidgetDef } from "./widget";
@@ -23,7 +24,7 @@ const CreatePosition: WidgetDef<State, Context> = {
     });
 
     if (!client) {
-      throw new Error("Missing EOS client");
+      throw new Error(t`Missing EOS client`);
     }
 
     if (client.getAccount()) {
@@ -54,6 +55,7 @@ const injectPositionWidget = (el: HTMLElement) => {
 
 const Equilibrium: EquilibriumInjector = {
   isReady: () => !!context.client,
+
   init: (
     accountName: string,
     endpoint: string,
@@ -70,15 +72,19 @@ const Equilibrium: EquilibriumInjector = {
       },
     });
   },
+
+  setLocale,
+
   injectEOSClient: (client: Client) => {
     context.client = client;
-    window.dispatchEvent(new Event("equilibrium:ready"));
   },
+
   getContext: () => context,
+
   Widgets: {
     Position: injectPositionWidget,
   },
 };
 
-(<any>window).Equilibrium = Equilibrium;
-window.dispatchEvent(new Event("equilibrium:loaded"));
+export default Equilibrium;
+

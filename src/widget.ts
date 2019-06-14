@@ -8,17 +8,15 @@ export interface TemplateWidget<S, C> {
   className?: string;
 }
 
-export type TemplateArg =
-  | undefined
-  | boolean
-  | string
-  | number
-  | TemplateWidget<any, any>;
+type ScalarArg = undefined | boolean | string | number;
+
+export type TemplateArg = ScalarArg | TemplateWidget<any, any>; // TODO arrays
 
 export type RenderTemplate = (
   parts: TemplateStringsArray,
   ...arg: TemplateArg[]
 ) => string;
+
 export type Render<S> = (state: S, r: RenderTemplate) => string;
 
 export interface WidgetChildren<C> {

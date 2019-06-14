@@ -1,5 +1,32 @@
+
 # Equilibrium Framework Widgets
 ## Getting started
+### VIA npm
+- Install `@eosdt/widgets` package
+```bash
+npm i @eosdt/widgets
+```
+- In your code:
+```typescript
+import Equilibrium from "@eosdt/widget";
+
+/**
+ * or you can inject into window object by
+ * import "@eosdt/widget/lib/inject";
+ * or
+ * import "@eosdt/widget/lib/inject-scatter";
+ */
+
+Equilibrium.init('youracntname', 'http://eos.node.url:port', (tx, opts) => {
+  // sign and send your transactions here
+});
+
+Equilibrium.Widgets.Position(
+  /* target HTMLElement */ document.querySelector("#widget")
+); // insert widget in any dom node
+
+```
+### VIA cdn
 - Include _Equilibrium widget injector_ somewhere in your html, eg.
 ```html
 <!doctype html>
@@ -7,7 +34,11 @@
 ...
 <body>
 ...
-<script async src="/inject.js"></script>
+<script async src="https://cdn.eosdt.com/widget/inject.js"></script>
+<!-- 
+  or you can use scatter injector
+  <script async src="https://cdn.eosdt.com/widget/injectScatter.js"></script>
+-->
 </body>
 </html>
 ```
@@ -42,6 +73,7 @@ interface Injector {
   isReady: () => boolean;
   init: (accountName: string, endpoint: string, onTransaction: (txObj: TxObj, options: TxOpt) => Promise<void>) => void;
   injectEOSClient: (client: Client) => void;
+  setLocale: (locale: { [key: string]: string[] }) => void;
   getContext: () => Context;
   Widgets: {
     Position: (el: HTMLElement) => Widget | null;
@@ -64,7 +96,33 @@ window.Equilibrium.init('someeosaccnt', 'https://api.eosn.io:443', (txObj, txOpt
 });
 ```
 - _injectEOSClient(client: Client)_ - injects EOS Client and fires `equilibrium:ready` event, you can either have your own client implementation based on the interface below, or use bundle with built-in scatter connector
-- _getContext()_ - reurns widget context(interface is described below)
+- _getContext()_ - returns widget context(interface is described below)
+- _setLocale(locale)_ - sets locale messages for widget(__NB__ you may update widget instance to see changes)
+```typescript
+const widget = Equilibrium.Widgets.Position(...);
+
+Equilibrium.setLocale({
+  "Waiting for account": ["Wird geladen"],
+  "Deposit": ["Deponieren"],
+  "Withdraw": ["Zurückziehen"],
+  "Generate": ["Generieren"],
+  "Payback": ["Zurückzahlen"],
+  "Total collateralized:": ["Total besichert:"],
+  "Debt generated:": ["Schuld generiert:"],
+  "Manage position of <i class=\"position-manage__username\">${...}</i>": [
+    "Position verwalten von <i class=\"position-manage__username\">",
+    "</i>"
+  ],
+  "Collateralization ratio:": ["Kollatarisierungsrate:"],
+  "Liquidation price:": ["Liquidationspreis:"],
+  "Max EOS to withdraw:": ["Max EOS zum zurückziehen:"],
+  "Max EOSDT to generate:": ["Max EOSDT zum generieren:"],
+  "OK": ["OK"],
+  "Wrong data": ["Falshe Eingabe"]
+});
+
+widget.update({});
+```
 - _Widgets.Position(el: HTMLElement)_ - mount `Position` widget to DOM Node
 - _Widgets.Scatter(el: HTMLElement)_ - mount `Scatter` login/logout widget to DOM Node. 
 __NB.__ Only available on injector with Scatter connector
@@ -108,6 +166,4 @@ Are available via *window.Equilibrium.getContext().events*
 const { events } = window.Equilibrium.getContext();
 ...
 events.emit('account'); // this should be fired in your code after login, logout or account change
-
 ```
-

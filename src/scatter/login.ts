@@ -1,4 +1,5 @@
 import Client from "../client";
+import { t } from "../globals";
 import { WidgetDef, TemplateArg } from "../widget"
 import { Button } from "../ui";
 import { Context } from "../types";
@@ -26,7 +27,7 @@ const Login: WidgetDef<LoginState, Context> = {
 
       w.update({
         logoutButton: Button({
-          name: "Logout",
+          name: t`Logout`,
           className: "scatter-auth-button",
           handler: async () => {
             await client.logout();
@@ -35,7 +36,7 @@ const Login: WidgetDef<LoginState, Context> = {
         }),
 
         loginButton: Button({
-          name: "Login",
+          name: t`Login`,
           className: "scatter-auth-button",
           handler: async () => {
             await client.connect();
@@ -59,7 +60,7 @@ const Login: WidgetDef<LoginState, Context> = {
 
   render: (state, r) => {
     if (!state.ready) {
-      return 'Loading...';
+      return t`Loading...`;
     }
 
     if (state.loggedIn) {

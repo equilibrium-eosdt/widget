@@ -2,7 +2,10 @@ const path = require("path");
 const HTMLPlugin = require("html-webpack-plugin");
 
 module.exports = (env, argv) => ({
-  entry: { inject: "./src/index.ts", injectScatter: "./src/inject-scatter.ts" },
+  entry: {
+    inject: "./src/inject.ts",
+    injectScatter: "./src/inject-scatter.ts",
+  },
   devtool: argv && argv.mode === "production" ? false : "inline-source-map",
   module: {
     rules: [
@@ -22,13 +25,13 @@ module.exports = (env, argv) => ({
   },
   plugins: [
     new HTMLPlugin({
-      filename: "example-simple-client.html",
       template: "example-simple.html",
-      inject: false
+      inject: false,
     }),
     new HTMLPlugin({
+      filename: "scatter.html",
       template: "example.html",
-      inject: false
+      inject: false,
     }),
   ],
 });

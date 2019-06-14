@@ -1,35 +1,162 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Widget Example</title>
     <style>
+      @font-face {
+        font-family: Geometria;
+        src: url("public/fonts/Geometria.woff2") format("woff2"),
+          url("public/fonts/Geometria.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: Geometria-Bold;
+        src: url("public/fonts/Geometria-Bold.woff2") format("woff2"),
+          url("public/fonts/Geometria-Bold.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: Geometria-Heavy;
+        src: url("public/fonts/Geometria-Heavy.woff2") format("woff2"),
+          url("public/fonts/Geometria-Heavy.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      div,
+      input,
+      ul {
+        box-sizing: border-box;
+      }
 
       body {
         background: #f0f2f5;
+        font-family: "Geometria";
+        font-size: 14px;
+        color: #002446;
       }
 
-      #position-widget {
+      nav {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #333;
+        margin-right: 20px;
+        font-family: "Geometria-Bold", serif;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      #position-widget,
+      #log-widget,
+      #readme-widget {
         display: flex;
         flex-flow: column nowrap;
         border-radius: 3px;
         background-color: white;
-        padding: 15px;
-        box-shadow: 0 2px 10px 0 rgba(34,36,38,.15);
+        padding: 50px;
+        box-shadow: 0 2px 10px 0 rgba(34, 36, 38, 0.15);
+        margin-bottom: 20px;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .position-manage {
         display: flex;
-        flex-flow: column nowrap;
+      }
+
+      .position-parameters {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-direction: column;
+        padding: 20px;
+        padding-bottom: 15px;
+        background: #ecf6ff;
+        flex: 0 0 320px;
+      }
+
+      .position-parameters--empty {
+        justify-content: flex-start;
+      }
+
+      .position-actions {
+        flex: 1 0 auto;
+        margin-right: 40px;
+      }
+
+      .position-actions__labels {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 320px;
+        width: 100%;
+        margin-bottom: 18px;
+      }
+
+      .position-actions__label {
+        height: 35px;
+        flex: 0 0 48%;
+        max-width: 48%;
+        font-size: 12px;
+        line-height: 15px;
+        color: #002446;
+        background: #ecf6ff;
+        border-radius: 4px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+      }
+
+      .position-parameters__item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #0024461a;
+        min-height: 29px;
+        width: 100%;
+      }
+
+      .position-parameters__item:last-of-type {
+        border-bottom: 1px solid transparent;
+      }
+
+      .position-parameters__title {
+        font-size: 12px;
+      }
+
+      .position-parameters__value,
+      .position-actions__value {
+        font-family: "Geometria-Bold", serif;
+        font-size: 12px;
       }
 
       .position-manage__title {
+        font-family: "Geometria-Heavy", serif;
         color: #333;
-        font-size: 24px;
+        font-size: 20px;
+        line-height: 25px;
+        margin-top: 0;
+        margin-bottom: 20px;
       }
 
       .position-manage__username {
-
       }
 
       .position-manage > .tab-container {
@@ -47,24 +174,88 @@
       }
 
       .position-manage__tab {
-        border-bottom: 1px #fff solid;
+        border-bottom: 2px #fff solid;
         cursor: pointer;
         margin-right: 15px;
+        font-family: "Geometria-Bold", serif;
+        color: #002446;
+        opacity: 0.5;
       }
 
       .position-manage__tab--active {
-        border-bottom: 1px #0078e3 solid;
+        border-bottom: 2px #0024461a solid;
+        opacity: 1;
       }
+
+      /*
+
+      .position-manage__tabs-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 40px;
+        margin-bottom: 15px;
+        max-width: 320px;
+        font-family: 'Geometria-Bold', serif;
+        font-size: 12px;
+      }
+
+      .position-manage__tabs {
+        margin: 0;
+        background: white;
+        width: 100%;
+        padding-left: 13px;
+        border: 1px solid #0024461a;
+        border-top: none;
+        font-size: 14px;
+        line-height: 18px;
+        font-family: 'Geometria-Bold', serif;
+        position: absolute;
+        z-index: 2;
+      }
+
+      .position-manage__activeTab {
+        border: 1px solid #0024461a;
+        padding-left: 13px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        line-height: 18px;
+        font-size: 14px;
+        font-family: 'Geometria-Bold', serif;
+        cursor: pointer;
+      }
+
+      .position-manage__dropdownMenu {
+        width: 75%;
+        position: relative;
+      }
+
+      .position-manage__tab {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 30px;
+      }
+
+      .position-manage__tab--active {
+
+      }
+
+      */
 
       .position-manage__error {
         color: red;
         position: absolute;
-        top: 18px;
+        bottom: -40px;
+        font-size: 12px;
       }
 
       .position-manage__pending {
         position: absolute;
-        top: 18px;
+        bottom: -40px;
       }
 
       .scatter-auth {
@@ -83,18 +274,44 @@
       .form {
         display: flex;
         position: relative;
-      }
-
-      .form--new-position {
         flex-direction: column;
       }
 
+      .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        min-height: 61px;
+        margin-bottom: 25px;
+      }
+
+      .input-wrapper:last-of-type {
+        margin-bottom: 15px;
+      }
+
+      .input-label {
+        font-family: "Geometria-Bold", serif;
+        font-size: 12px;
+        line-height: 15px;
+        color: #002446;
+      }
+
+      .form--tab .input-wrapper {
+        min-height: 40px;
+      }
+
       .input {
-        border: 1px solid rgba(34,36,38,.15);
-        height: 26px;
-        max-width: 220px;
-        padding-left: 10px;
-        margin-bottom: 10px;
+        border: 1px solid #0024461a;
+        height: 40px;
+        max-width: 320px;
+        padding-left: 12px;
+        width: 100%;
+        outline: none;
+        font-family: "Geometria-Bold", serif;
+        font-size: 14px;
+        line-height: 18px;
+        color: #002446;
       }
 
       .input--error {
@@ -102,26 +319,59 @@
       }
 
       .button {
-        height: 30px;
-        width: 50px;
+        max-width: 320px;
+        width: 100%;
+        height: 40px;
+
+        border-radius: 4px;
         border: none;
-        background: #0078e3;
+
         color: #fff;
         cursor: pointer;
-        font-size: 16px;
-      }
+        font-size: 14px;
+        line-height: 18px;
 
+        background: #1792ff;
+      }
     </style>
     <script>
-      window.addEventListener('equilibrium:ready', function() {
-        window.widget = window.Equilibrium.Widgets.Position(document.querySelector('#position-widget'));
-        window.scatterWidget = window.Equilibrium.Widgets.Scatter(document.querySelector('#scatter-widget'));
+      window.addEventListener("equilibrium:ready", function() {
+        window.widget = window.Equilibrium.Widgets.Position(
+          document.querySelector("#position-widget"),
+        );
+        window.scatterWidget = window.Equilibrium.Widgets.Scatter(
+          document.querySelector("#scatter-widget"),
+        );
       });
     </script>
   </head>
   <body>
     <div id="scatter-widget"></div>
+    <nav>
+      <a href="index.html">Example</a>
+      <a href="scatter.html">Example with Scatter</a>
+      <a target="_blank" href="https://github.com/equilibrium-eosdt/widget#api">API Docs</a>
+    </nav>
     <div id="position-widget"></div>
+    <div id="readme-widget">
+      <h2 class="position-manage__title">Readme</h2>
+      <p>
+        Include <b>widget injector</b> in your page
+      </p>
+      <p>
+      <i>&lt;script async src="https://cdn.eosdt.com/widget/injectScatter.js"&gt;&lt;/script&gt;</i>
+      </p>
+      <p>
+        <b>In your JS</b> you can init widget
+      </p>
+      <pre>
+window.addEventListener('equilibrium:ready'), () => {
+  window.Equilibrium.Widgets.Position(
+    /* target HTMLElement */ document.querySelector("#widget")
+  );
+});
+      </pre>
+    </div>
     <script async src="./injectScatter.js"></script>
   </body>
 </html>

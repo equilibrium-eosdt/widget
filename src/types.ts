@@ -37,8 +37,13 @@ export interface Context {
 
 export interface EquilibriumInjector {
   isReady: () => boolean;
-  init: (accountName: string, endpoint: string, onTransaction: (txObj: TxObj, options: TxOpt) => Promise<void>) => void;
+  init: (
+    accountName: string,
+    endpoint: string,
+    onTransaction: (txObj: TxObj, options: TxOpt) => Promise<void>,
+  ) => void;
   injectEOSClient: (client: Client) => void;
+  setLocale: (locale: { [key: string]: string[] }) => void;
   getContext: () => Context;
   Widgets: {
     Position: (el: HTMLElement) => Widget<any, any> | null;

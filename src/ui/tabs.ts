@@ -1,8 +1,11 @@
+import { t } from "../globals";
 import { WidgetDef, TemplateWidget } from "../widget";
+
+type TFunc = () => string;
 
 interface TabItem {
   id: string,
-  name: string,
+  name: string | TFunc,
   type: WidgetDef<any, any>
 }
 
@@ -44,7 +47,7 @@ export default function Tabs(params: { tabs: TabItem[], id: string, className?: 
 
         return true;
       })) {
-        throw new Error('Not all tabs processed')
+        throw new Error(t`Not all tabs processed`)
       }
     },
 
@@ -52,12 +55,21 @@ export default function Tabs(params: { tabs: TabItem[], id: string, className?: 
       const tab = tabs[state.tabIndex];
 
       return r`
-  <ul class="position-manage__tabs">${tabs.map(({ id, name }, index) => r`
-    <li class="${index === state.tabIndex ? "position-manage__tab--active " : ""}${id}-tab position-manage__tab">
-      ${name}
-    </li>
-`).join('')}
-  </ul>
+      <div class="position-manage__tabs-wrapper">
+        <!-- span>I want to </span -->
+        <div class="position-manage__dropdownMenu">
+          <!-- div class="position-manage__activeTab">
+          ${/* tab.name */ ''}
+          </div -->
+          <ul class="position-manage__tabs">
+            ${tabs.map(({ id, name }, index) => r`
+              <li class="${index === state.tabIndex ? "position-manage__tab--active " : ""}${id}-tab position-manage__tab">
+                ${typeof name === "function" ? name() : name}
+              </li>
+          `).join('')}
+          </ul>
+        </div>
+      </div>
   ${{ id: tab.id, type: tab.type }}
 `;
     }

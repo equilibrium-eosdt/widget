@@ -1,3 +1,4 @@
+import { t } from "../globals";
 import { WidgetDef, TemplateArg } from "../widget";
 
 export interface ButtonState {
@@ -20,7 +21,7 @@ export default function createButton(params: {
       const el = w.find();
 
       if (!el) {
-        throw new Error("failed to render");
+        throw new Error(t`failed to render`);
       } else if (submit) {
         (<HTMLButtonElement>el).type = "submit";
       }

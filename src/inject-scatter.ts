@@ -1,8 +1,8 @@
 import EOSClient from "./client";
 import Login from "./scatter/login";
-import { Client, EquilibriumInjector } from "./types";
+import { Client } from "./types";
 import { Widget, WidgetDef } from "./widget";
-import "./";
+import Equilibrium from "./";
 
 const Scatter: WidgetDef<{}, {}> = {
   state: {},
@@ -13,11 +13,15 @@ const Scatter: WidgetDef<{}, {}> = {
 };
 
 const client = new EOSClient("eosdt");
-const context = (<EquilibriumInjector>(<any>window).Equilibrium).getContext();
+const context = Equilibrium.getContext();
+const injector = Equilibrium.injectEOSClient.bind(null);
 
-(<EquilibriumInjector>(<any>window).Equilibrium).Widgets.Scatter = (
-  el: HTMLElement,
-) => {
+Equilibrium.injectEOSClient = (client: Client) => {
+  injector(client);
+  window.dispatchEvent(new Event("equilibrium:ready"));
+};
+
+Equilibrium.Widgets.Scatter = (el: HTMLElement) => {
   if (!el) {
     return null;
   }
@@ -25,6 +29,6 @@ const context = (<EquilibriumInjector>(<any>window).Equilibrium).getContext();
   return new Widget<{}, {}>(el, Scatter, context);
 };
 
-(<EquilibriumInjector>(<any>window).Equilibrium).injectEOSClient(
-  <Client>client,
-);
+(<any>window).Equilibrium = Equilibrium;
+window.dispatchEvent(new Event("equilibrium:loaded"));
+Equilibrium.injectEOSClient(<Client>client);
