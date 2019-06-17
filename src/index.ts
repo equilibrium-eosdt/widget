@@ -3,8 +3,9 @@ import { EventEmitter } from "events";
 import { t, setLocale } from "./globals";
 import ManagePosition from "./position";
 import { Context, EquilibriumInjector, Client } from "./types";
-import { Widget, WidgetDef } from "./widget";
 import { LoginState } from "./scatter/login";
+import { setStyles, setContainerStyle } from "./styles";
+import { Widget, WidgetDef } from "./widget";
 
 interface State {
   loggedIn: boolean;
@@ -50,6 +51,7 @@ const injectPositionWidget = (el: HTMLElement) => {
     return null;
   }
 
+  setContainerStyle(el);
   return new Widget<State, Context>(el, CreatePosition, context);
 };
 
@@ -63,7 +65,7 @@ const Equilibrium: EquilibriumInjector = {
   ) => {
     Equilibrium.injectEOSClient(<any>{
       getAccount: () => ({
-        name: accountName
+        name: accountName,
       }),
       rpc: new JsonRpc(endpoint),
       api: {
@@ -88,3 +90,4 @@ const Equilibrium: EquilibriumInjector = {
 
 export default Equilibrium;
 
+export { setStyles };

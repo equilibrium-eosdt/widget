@@ -146,14 +146,14 @@ const ManagePosition: WidgetDef<MPState, Context> = {
     ) {
       return r`
       <div class="position-actions">
-        <h2 class="position-manage__title">${t`Create CDP`}</h2>${{
+        <h2 class="position-manage__title">${t`Create position`}</h2>${{
           id: "create-position",
           type: CreatePosition({ account, contract }),
         }}
       </div>
       <div class="position-parameters position-parameters--empty">
-        <h2 class="position-manage__title">You don't have any positions yet</h2>
-          <span class="position-parameters__title">Deposit collateral and generate <br/>debt to get started</span>
+        <h2 class="position-manage__title">${t`You don't have any positions yet`}</h2>
+          <span class="position-parameters__title">${t`Deposit collateral and generate <br/>debt to get started`}</span>
       </div>`;
     }
 
@@ -195,7 +195,7 @@ const ManagePosition: WidgetDef<MPState, Context> = {
         ${state.tabs}
       </div>
       <div class="position-parameters">
-        <h2 class="position-manage__title">Position parameters</h2>
+        <h2 class="position-manage__title">${t`Position parameters`}</h2>
         <div class="position-parameters__item">
           <span class="position-parameters__title">${t`Collateralization ratio:`}</span>
           <span class="position-parameters__value">${(ltv * 100).toFixed()}%</span>

@@ -2,7 +2,7 @@ import EOSClient from "./client";
 import Login from "./scatter/login";
 import { Client } from "./types";
 import { Widget, WidgetDef } from "./widget";
-import Equilibrium from "./";
+import Equilibrium, { setStyles } from "./";
 
 const Scatter: WidgetDef<{}, {}> = {
   state: {},
@@ -12,6 +12,7 @@ const Scatter: WidgetDef<{}, {}> = {
   },
 };
 
+setStyles();
 const client = new EOSClient("eosdt");
 const context = Equilibrium.getContext();
 const injector = Equilibrium.injectEOSClient.bind(null);

@@ -8,7 +8,7 @@ npm i @eosdt/widget
 ```
 - In your code:
 ```typescript
-import Equilibrium from "@eosdt/widget";
+import Equilibrium, { setStyles } from "@eosdt/widget";
 
 /**
  * or you can inject into window object by
@@ -16,6 +16,8 @@ import Equilibrium from "@eosdt/widget";
  * or
  * import "@eosdt/widget/lib/inject-scatter";
  */
+
+setStyles(); // Load styles (you need not call this function using window injector)
 
 Equilibrium.init('youracntname', 'http://eos.node.url:port', (tx, opts) => {
   // sign and send your transactions here
@@ -65,7 +67,14 @@ window.addEventListener('equilibrium:ready'), () => {
 - inject.js - contains widget injectors without EOS blockchain client
 - injectScatter.js - contains widget injectors with bundled connector to Scatter wallet
 ## API
-### *window.Equilibrium* object
+```typescript
+  import Equilibrium, { setStyles } from "@eosdt/widget";
+```
+  
+  
+### *setStyles()*
+Injects basic styles
+### *Equilibrium*
 Interface
 ```typescript
 

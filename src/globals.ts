@@ -8,11 +8,18 @@ export const autoIncrement = () => ++data.counter;
 
 export let t = createLocaleTemplateFunction({});
 
-export const setLocale = (locale: { [key: string]: string[] }) => {
+export const setLocale = (
+  locale: { [key: string]: string[] },
+  extract?: Map<string, string[]>,
+) => {
   const localeMap = Object.keys(locale).reduce(
     (map, key) => map.set(key, locale[key]),
     new Map<string, string[]>(),
   );
 
-  t = createLocaleTemplateFunction({ locale: localeMap });
+  if (!extract) {
+    t = createLocaleTemplateFunction({ locale: localeMap });
+  } else {
+    t = createLocaleTemplateFunction({ locale: localeMap, extract });
+  }
 };

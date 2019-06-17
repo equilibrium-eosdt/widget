@@ -1,6 +1,7 @@
-import Equilibrium from "./";
+import Equilibrium, { setStyles } from "./";
 import { Client } from "./types";
 
+setStyles();
 const injector = Equilibrium.injectEOSClient.bind(null);
 
 Equilibrium.injectEOSClient = (client: Client) => {
