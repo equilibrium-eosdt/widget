@@ -7,4 +7,8 @@ export interface PaybackState {
 export default function PaybackEOSDT(deps: {
     account: Account;
     contract: Contract;
+    getNUTAmount: (value: string) => number;
+    userBalanceNut: number;
+    userBalanceEosdt: number;
+    availableToPayback?: () => number | undefined;
 }): WidgetDef<PaybackState, Context>;

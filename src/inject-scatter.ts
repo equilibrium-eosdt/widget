@@ -8,7 +8,7 @@ const Scatter: WidgetDef<{}, {}> = {
   state: {},
 
   render: (_, r) => {
-    return r`${{ id: "scatter", className: "scatter-auth", type: Login }}`;
+    return r`${{ id: "scatter", className: "equil-scatter-auth", type: Login }}`;
   },
 };
 

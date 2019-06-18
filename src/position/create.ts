@@ -23,7 +23,7 @@ export default function CreatePosition(deps: {
       w.update({
         form: Form({
           id: "create-position",
-          className: "form",
+          className: "equil-position-manage__form",
           fields: ["deposit", "generate"],
           label: ["I want to deposit EOS", "And generate EOSDT"],
           // buttonText: "Create position",

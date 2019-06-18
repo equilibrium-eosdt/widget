@@ -26,7 +26,11 @@ export default function createForm(params: {
   const Form: WidgetDef<FormState, {}> = {
     state: {
       pending: false,
-      submitButton: Button({ name: t`OK`, submit: true, className: "button" }),
+      submitButton: Button({
+        name: t`OK`,
+        submit: true,
+        className: "equil-position-manage__button",
+      }),
       validate: {},
     },
 
@@ -46,7 +50,9 @@ export default function createForm(params: {
                   const error = validate[field](
                     (<HTMLInputElement>e.target!).value,
                   );
-                  w.update({ error });
+                  if (error) {
+                    w.update({ error });
+                  }
                 },
               }),
               {},
@@ -98,13 +104,33 @@ export default function createForm(params: {
 
     render: (state, r) => {
       return r`
-${state.pending ? `<span class="position-manage__pending">Loading...</span>` : ""}
-${fields.map((name, i) =>
-  `<div class="input-wrapper">
-    ${label ? `<label class="input-label">${label[i]}</label>` : ""}
-    <input class="input ${state.error ? 'input--error' : null}"}" placeholder="0.00" type="text" name="${name}" />
-  </div>`,).join("")}
-${state.error ? `<span class="position-manage__error">${state.error}</span>` : ""}
+${
+  state.pending
+    ? `<span class="equil-position-manage__pending">Loading...</span>`
+    : ""
+}
+${fields
+  .map(
+    (name, i) =>
+      `<div class="equil-position-manage__input-wrapper">
+    ${
+      label
+        ? `<label class="equil-position-manage__input-label">${
+            label[i]
+          }</label>`
+        : ""
+    }
+    <input class="equil-position-manage__input ${
+      state.error ? "equil-position-manage__input--error" : null
+    }"}" placeholder="0.00" type="text" name="${name}" />
+  </div>`,
+  )
+  .join("")}
+${
+  state.error
+    ? `<span class="equil-position-manage__error">${state.error}</span>`
+    : ""
+}
 ${state.submitButton}
 `;
     },

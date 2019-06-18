@@ -10,8 +10,9 @@ export interface GenerateState {
 export default function GenerateEOSDT(deps: {
   account: Account;
   contract: Contract;
+  maxToGenerateFunc?: () => number | undefined;
 }) {
-  const { account, contract } = deps;
+  const { account, contract, maxToGenerateFunc } = deps;
 
   return <WidgetDef<GenerateState, Context>>{
     state: {},
@@ -20,8 +21,21 @@ export default function GenerateEOSDT(deps: {
       w.update({
         form: Form({
           id: "generate-eosdt",
-          className: "form form--tab",
+          className: "equil-position-manage__form equil-position-manage__form--tab",
           fields: ["amount"],
+          validate: {
+            amount: (value: string) => {
+              const maxToGenerate = maxToGenerateFunc ? maxToGenerateFunc() : 0;
+              if (Number(value) > 100000000) {
+                return t`Generate amount cannot exceed 100000000.`;
+              } else if (Number(value) > Number(maxToGenerate)) {
+                const max = maxToGenerate
+                  ? Number(maxToGenerate).toFixed(4)
+                  : 0;
+                return t`Generate amount cannot exceed ${max} EOSDT`;
+              } else return;
+            },
+          },
           handler: async (data?: FormData) => {
             if (data) {
               const positions = await contract.getAllUserPositions(

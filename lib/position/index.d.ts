@@ -16,6 +16,13 @@ export interface MPState {
     params?: any;
     settings?: any;
     balance?: string[];
+    maxEos?: number;
+    maxEosdt?: number;
+    userBalanceEos?: number;
+    userBalanceEosdt?: number;
+    userBalanceNut?: number;
+    eosdt?: number;
+    getNUTAmount?: (value: string) => number;
 }
 declare const ManagePosition: WidgetDef<MPState, Context>;
 export default ManagePosition;

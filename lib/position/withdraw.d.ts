@@ -7,4 +7,5 @@ export interface WithdrawState {
 export default function WithdrawEOS(deps: {
     account: Account;
     contract: Contract;
+    maxToWithdrawFunc?: () => number | undefined;
 }): WidgetDef<WithdrawState, Context>;

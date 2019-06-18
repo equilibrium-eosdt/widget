@@ -10,8 +10,9 @@ export interface DepositState {
 export default function DepositEOS(deps: {
   account: Account;
   contract: Contract;
+  maxToDepositFunc?: () => number | undefined;
 }) {
-  const { account, contract } = deps;
+  const { account, contract, maxToDepositFunc } = deps;
 
   return <WidgetDef<DepositState, Context>>{
     state: {},
@@ -20,8 +21,21 @@ export default function DepositEOS(deps: {
       w.update({
         form: Form({
           id: "deposit-eos",
-          className: "form form--tab",
+          className: "equil-position-manage__form equil-position-manage__form--tab",
           fields: ["amount"],
+          validate: {
+            amount: (value: string) => {
+              const maxToDeposit = maxToDepositFunc ? maxToDepositFunc() : 0;
+
+              if (Number(value) > 100000000) {
+                return t`Deposit amount cannot exceed 100000000.`;
+              }
+              if (Number(value) > Number(maxToDeposit)) {
+                const max = maxToDeposit ? Number(maxToDeposit).toFixed(4) : 0;
+                return t`Value should not exceed your balance of ${max} EOS`;
+              } else return;
+            },
+          },
           handler: async (data?: FormData) => {
             if (data) {
               const positions = await contract.getAllUserPositions(

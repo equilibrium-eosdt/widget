@@ -1,9 +1,9 @@
 {
   "Waiting for account": ["Wird geladen"],
   "Deposit": ["Deponieren"],
-  "Withdraw": ["Zurückziehen"],
+  "Withdraw": ["ZurÃ¼ckziehen"],
   "Generate": ["Generieren"],
-  "Payback": ["Zurückzahlen"],
+  "Payback": ["ZurÃ¼ckzahlen"],
   "Total collateralized:": ["Total besichert:"],
   "Debt generated:": ["Schuld generiert:"],
   "Manage position of <i class=\"position-manage__username\">${...}</i>": [
@@ -12,7 +12,7 @@
   ],
   "Collateralization ratio:": ["Kollatarisierungsrate:"],
   "Liquidation price:": ["Liquidationspreis:"],
-  "Max EOS to withdraw:": ["Max EOS zum zurückziehen:"],
+  "Max EOS to withdraw:": ["Max EOS zum zurÃ¼ckziehen:"],
   "Max EOSDT to generate:": ["Max EOSDT zum generieren:"],
   "OK": ["OK"],
   "Wrong data": ["Falshe Eingabe"]

@@ -114,7 +114,7 @@ export class Widget<S, C = undefined> {
           this.sig!.emit();
         })
         .catch((err) => {
-          element.innerHTML = `<span class="widget-error">${
+          element.innerHTML = `<span class="equil-widget-error">${
             err.message
           }</span>`;
           // TODO only dev

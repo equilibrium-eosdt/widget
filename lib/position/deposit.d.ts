@@ -7,4 +7,5 @@ export interface DepositState {
 export default function DepositEOS(deps: {
     account: Account;
     contract: Contract;
+    maxToDepositFunc?: () => number | undefined;
 }): WidgetDef<DepositState, Context>;

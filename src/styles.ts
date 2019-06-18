@@ -8,11 +8,11 @@ const containerStyle = (id: string) => `
 `;
 
 const styles = `
-  .position-manage {
+  .equil-position-manage {
     display: flex;
   }
 
-  .position-parameters {
+  .equil-position-parameters {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -23,16 +23,16 @@ const styles = `
     flex: 0 0 320px;
   }
 
-  .position-parameters--empty {
+  .equil-position-parameters--empty {
     justify-content: flex-start;
   }
 
-  .position-actions {
+  .equil-position-actions {
     flex: 1 0 auto;
     margin-right: 40px;
   }
 
-  .position-actions__labels {
+  .equil-position-actions__labels {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -41,8 +41,8 @@ const styles = `
     margin-bottom: 18px;
   }
 
-  .position-actions__label {
-    height: 35px;
+  .equil-position-actions__label {
+    height: 50px;
     flex: 0 0 48%;
     max-width: 48%;
     font-size: 12px;
@@ -57,7 +57,7 @@ const styles = `
     padding: 10px;
   }
 
-  .position-parameters__item {
+  .equil-position-parameters__item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -66,21 +66,21 @@ const styles = `
     width: 100%;
   }
 
-  .position-parameters__item:last-of-type {
+  .equil-position-parameters__item:last-of-type {
     border-bottom: 1px solid transparent;
   }
 
-  .position-parameters__title {
+  .equil-position-parameters__title {
     font-size: 12px;
   }
 
-  .position-parameters__value,
-  .position-actions__value {
+  .equil-position-parameters__value,
+  .equil-position-actions__value {
     font-family: "Geometria-Bold", serif;
     font-size: 12px;
   }
 
-  .position-manage__title {
+  .equil-position-manage__title {
     font-family: "Geometria-Heavy", serif;
     color: #333;
     font-size: 20px;
@@ -89,15 +89,15 @@ const styles = `
     margin-bottom: 20px;
   }
 
-  .position-manage__username {
+  .equil-position-manage__username {
   }
 
-  .position-manage > .tab-container {
+  .equil-position-manage__tab-container {
     display: flex;
     flex-flow: column nowrap;
   }
 
-  .position-manage__tabs {
+  .equil-position-manage__tabs {
     display: flex;
     flex-flow: row nowrap;
     list-style: none;
@@ -106,7 +106,7 @@ const styles = `
     margin-top: 0;
   }
 
-  .position-manage__tab {
+  .equil-position-manage__tab {
     border-bottom: 2px #fff solid;
     cursor: pointer;
     margin-right: 15px;
@@ -115,24 +115,24 @@ const styles = `
     opacity: 0.5;
   }
 
-  .position-manage__tab--active {
+  .equil-position-manage__tab--active {
     border-bottom: 2px #0024461a solid;
     opacity: 1;
   }
 
-  .position-manage__error {
+  .equil-position-manage__error {
     color: red;
     position: absolute;
     bottom: -40px;
     font-size: 12px;
   }
 
-  .position-manage__pending {
+  .equil-position-manage__pending {
     position: absolute;
     bottom: -40px;
   }
 
-  .scatter-auth {
+  .equil-scatter-auth {
     display: flex;
   }
 
@@ -145,13 +145,13 @@ const styles = `
     background: #ccc;
   }
 
-  .form {
+  .equil-position-manage__form {
     display: flex;
     position: relative;
     flex-direction: column;
   }
 
-  .input-wrapper {
+  .equil-position-manage__input-wrapper {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -160,22 +160,22 @@ const styles = `
     margin-bottom: 25px;
   }
 
-  .input-wrapper:last-of-type {
+  .equil-position-manage__input-wrapper:last-of-type {
     margin-bottom: 15px;
   }
 
-  .input-label {
+  .equil-position-manage__input-label {
     font-family: "Geometria-Bold", serif;
     font-size: 12px;
     line-height: 15px;
     color: #002446;
   }
 
-  .form--tab .input-wrapper {
+  .equil-position-manage__form--tab .equil-position-manage__input-wrapper {
     min-height: 40px;
   }
 
-  .input {
+  .equil-position-manage__input {
     border: 1px solid #0024461a;
     height: 40px;
     max-width: 320px;
@@ -188,11 +188,11 @@ const styles = `
     color: #002446;
   }
 
-  .input--error {
+  .equil-position-manage__input--error {
     border-color: red;
   }
 
-  .button {
+  .equil-position-manage__button {
     max-width: 320px;
     width: 100%;
     height: 40px;

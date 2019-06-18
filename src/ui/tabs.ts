@@ -55,15 +55,15 @@ export default function Tabs(params: { tabs: TabItem[], id: string, className?: 
       const tab = tabs[state.tabIndex];
 
       return r`
-      <div class="position-manage__tabs-wrapper">
+      <div class="equil-position-manage__tabs-wrapper">
         <!-- span>I want to </span -->
-        <div class="position-manage__dropdownMenu">
-          <!-- div class="position-manage__activeTab">
+        <div class="equil-position-manage__dropdownMenu">
+          <!-- div class="equil-position-manage__activeTab">
           ${/* tab.name */ ''}
           </div -->
-          <ul class="position-manage__tabs">
+          <ul class="equil-position-manage__tabs">
             ${tabs.map(({ id, name }, index) => r`
-              <li class="${index === state.tabIndex ? "position-manage__tab--active " : ""}${id}-tab position-manage__tab">
+              <li class="${index === state.tabIndex ? "equil-position-manage__tab--active " : ""}${id}-tab equil-position-manage__tab">
                 ${typeof name === "function" ? name() : name}
               </li>
           `).join('')}

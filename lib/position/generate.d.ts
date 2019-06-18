@@ -7,4 +7,5 @@ export interface GenerateState {
 export default function GenerateEOSDT(deps: {
     account: Account;
     contract: Contract;
+    maxToGenerateFunc?: () => number | undefined;
 }): WidgetDef<GenerateState, Context>;

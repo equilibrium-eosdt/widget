@@ -36,7 +36,7 @@ const CreatePosition: WidgetDef<State, Context> = {
   render: (state, r) => {
     return r`${state.loggedIn && {
       id: "position",
-      className: "position-manage",
+      className: "equil-position-manage",
       type: ManagePosition,
     }}`;
   },

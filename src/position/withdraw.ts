@@ -10,9 +10,9 @@ export interface WithdrawState {
 export default function WithdrawEOS(deps: {
   account: Account;
   contract: Contract;
+  maxToWithdrawFunc?: () => number | undefined;
 }) {
-  const { account, contract } = deps;
-
+  const { account, contract, maxToWithdrawFunc } = deps;
   return <WidgetDef<WithdrawState, Context>>{
     state: {},
 
@@ -20,8 +20,21 @@ export default function WithdrawEOS(deps: {
       w.update({
         form: Form({
           id: "withdraw-eosdt",
-          className: "form form--tab",
+          className: "equil-position-manage__form equil-position-manage__form--tab",
           fields: ["amount"],
+          validate: {
+            amount: (value: string) => {
+              const maxToWithdraw = maxToWithdrawFunc ? maxToWithdrawFunc() : 0;
+              if (Number(value) > Number(maxToWithdraw)) {
+                const max = maxToWithdraw
+                  ? Number(maxToWithdraw).toFixed(4)
+                  : 0;
+                return t`EOS amount withdrawn should not be more than ${max}`;
+              } else if (Number(value) > 100000000) {
+                return t`Withdraw amount cannot exceed 100000000.`;
+              } else return;
+            },
+          },
           handler: async (data?: FormData) => {
             if (data) {
               const positions = await contract.getAllUserPositions(
