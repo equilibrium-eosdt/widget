@@ -79,6 +79,7 @@ Interface
 ```typescript
 
 interface Injector {
+  iframeMode: boolean;
   isReady: () => boolean;
   init: (accountName: string, endpoint: string, onTransaction: (txObj: TxObj, options: TxOpt) => Promise<void>) => void;
   injectEOSClient: (client: Client) => void;
@@ -89,6 +90,11 @@ interface Injector {
     Scatter?: (el: HTMLElement) => Widget | null;
   };
 }
+```
+- _iframeMode_ - set this property to true to mount widget in iframe. __NB__ This should be set befor calling _init()_ method
+```typescript
+Equilibrium.iframeMode = true;
+Equilibrium.init(...);
 ```
 - _isReady()_ - returns ready state of widgets(widgets are ready when the client is injected and initialized)
 - _init(accountName: string, endpoint: string, onTransaction: (txObj, txOpt) => Promise<void>)_ - initialize widgets with dummy client, you need to specify your account name, EOS node endpoint and transaction signer
@@ -109,6 +115,7 @@ window.Equilibrium.init('someeosaccnt', 'https://api.eosn.io:443', (txObj, txOpt
 - _setLocale(locale)_ - sets locale messages for widget(__NB__ you may update widget instance to see changes)
 ```typescript
 const widget = Equilibrium.Widgets.Position(...);
+// when iframeMode === true -> widget === null
 
 Equilibrium.setLocale({
   "Waiting for account": ["Wird geladen"],

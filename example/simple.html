@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Widget Example</title>
+    <style>
+      @font-face {
+        font-family: Geometria;
+        src: url("public/fonts/Geometria.woff2") format("woff2"),
+          url("public/fonts/Geometria.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: Geometria-Bold;
+        src: url("public/fonts/Geometria-Bold.woff2") format("woff2"),
+          url("public/fonts/Geometria-Bold.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: Geometria-Heavy;
+        src: url("public/fonts/Geometria-Heavy.woff2") format("woff2"),
+          url("public/fonts/Geometria-Heavy.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      div,
+      input,
+      ul {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #f0f2f5;
+        font-family: "Geometria";
+        font-size: 14px;
+        color: #002446;
+      }
+
+      nav {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #333;
+        margin-right: 20px;
+        font-family: "Geometria-Bold", serif;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      #position-widget,
+      #log-widget,
+      #readme-widget {
+        display: flex;
+        flex-flow: column nowrap;
+        border-radius: 3px;
+        background-color: white;
+        padding: 50px;
+        box-shadow: 0 2px 10px 0 rgba(34, 36, 38, 0.15);
+        margin-bottom: 20px;
+        width: 800px;
+        min-height: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+      }
+
+      #username-modal {
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        position: absolute;
+        background: #0000001a;
+      }
+
+      #username-modal .content {
+        height: 100px;
+        width: 400px;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        box-shadow: 0 2px 10px 0 rgba(34, 36, 38, 0.15);
+        left: 27%;
+        right: 27%;
+        top: 26%;
+        bottom: 26%;
+      }
+
+      /*
+
+      .position-manage__tabs-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 40px;
+        margin-bottom: 15px;
+        max-width: 320px;
+        font-family: 'Geometria-Bold', serif;
+        font-size: 12px;
+      }
+
+      .position-manage__tabs {
+        margin: 0;
+        background: white;
+        width: 100%;
+        padding-left: 13px;
+        border: 1px solid #0024461a;
+        border-top: none;
+        font-size: 14px;
+        line-height: 18px;
+        font-family: 'Geometria-Bold', serif;
+        position: absolute;
+        z-index: 2;
+      }
+
+      .position-manage__activeTab {
+        border: 1px solid #0024461a;
+        padding-left: 13px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        line-height: 18px;
+        font-size: 14px;
+        font-family: 'Geometria-Bold', serif;
+        cursor: pointer;
+      }
+
+      .position-manage__dropdownMenu {
+        width: 75%;
+        position: relative;
+      }
+
+      .position-manage__tab {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 30px;
+      }
+
+      .position-manage__tab--active {
+
+      }
+
+      */
+    </style>
+    <script>
+
+      let userName = "";
+
+      window.addEventListener("equilibrium:ready", function() {
+
+        document.querySelector("#position-widget").innerHTML = `
+        <div id="username-modal">
+          <div class="content">
+            <input
+              class="equil-position-manage__input"
+              id="setUsername"
+              type="text"
+              placeholder="enter username"
+              style="max-width: 180px;margin-right: 10px;"
+            />
+            <button class="equil-position-manage__button" id="getUsername" style="max-width: 60px;">
+              OK
+            </button>
+          </div>
+        </div>
+        `
+
+        document.querySelector("#getUsername").addEventListener("click", function() {
+            userName = document.querySelector("#setUsername").value;
+
+            if (userName.length < 13 && userName.length > 1) {
+
+              document.querySelector("#username-modal").style.display = "none";
+
+              window.widget = window.Equilibrium.Widgets.Position(
+                document.querySelector("#position-widget"),
+              );
+
+              window.Equilibrium.init(userName, "https://api.eosn.io",function(tx, opt) {
+                console.log({ tx, opt });
+                document.querySelector("#log-widget span").innerHTML = JSON.stringify({ tx, opt });
+              });
+            }
+          });
+
+      });
+
+      window.addEventListener("equilibrium:loaded", function() {
+        window.Equilibrium.init(userName, "https://api.eosn.io", function(tx, opt) {}
+        );
+      });
+
+    </script>
+  </head>
+  <body>
+    <nav>
+      <a href="/">Example</a>
+      <a href="/scatter.html">Example with Scatter</a>
+      <a href="/example-iframe.html">Iframe example</a>
+      <a target="_blank" href="https://github.com/equilibrium-eosdt/widget#api">API Docs</a>
+    </nav>
+    <div id="position-widget"></div>
+    <div id="log-widget">
+      <h2 class="position-manage__title">Logs</h2>
+      <span>-</span>
+    </div>
+    <div id="readme-widget">
+      <h2 class="position-manage__title">Example</h2>
+      <p>
+        Include <b>widget injector</b> in your page
+      </p>
+      <p>
+        <i>&lt;script async src="https://cdn.eosdt.com/widget/inject.js"&gt;&lt;/script&gt;</i>
+      </p>
+      <p>
+        <b>In your JS</b> you can init widget
+      </p>
+      <pre>
+// When client is initialized 'equilibrium:ready' event is fired
+window.addEventListener('equilibrium:ready'), () => {
+  window.Equilibrium.Widgets.Position(
+    /* target HTMLElement */ document.querySelector("#widget")
+  );
+});
+
+if (!window.Equilibrium) {
+  window.addEventListener('equilibrium:loaded', () => {
+    window.Equilibrium.init(userName, "https://api.eosn.io",function(tx, opt) {
+      console.log({ tx, opt });
+      document
+        .querySelector("#log-widget span")
+        .innerHTML = JSON.stringify({ tx, opt });
+    });
+  })
+} else {
+  window.Equilibrium.init(userName, "https://api.eosn.io",function(tx, opt) {
+    console.log({ tx, opt });
+    document
+      .querySelector("#log-widget span")
+      .innerHTML = JSON.stringify({ tx, opt });
+  });
+}
+
+      </pre>
+    </div>
+    <script async src="/inject.js"></script>
+  </body>
+</html>

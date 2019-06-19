@@ -25,13 +25,23 @@ module.exports = (env, argv) => ({
   },
   plugins: [
     new HTMLPlugin({
-      template: "example-simple.html",
+      template: "example/simple.html",
       inject: false,
     }),
     new HTMLPlugin({
       filename: "scatter.html",
-      template: "example.html",
+      template: "example/scatter.html",
       inject: false,
     }),
+    new HTMLPlugin({
+      filename: "example-iframe.html",
+      template: "example/iframe.html",
+      inject: false,
+    }),
+    new HTMLPlugin({
+      filename: "iframe.html",
+      template: "src/iframe.html",
+      inject: false,
+    }), // TODO separate CDN content and examples
   ],
 });

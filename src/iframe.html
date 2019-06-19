@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      window.addEventListener("equilibrium:loaded", function() {
+        var data = window.location.hash.slice(1).split('@');
+        var account = data[0];
+        var endpoint = data[1];
+
+        if (window.top && account && endpoint) {
+          window.Equilibrium.init(account, endpoint, function(tx, opt) {
+            window.top.postMessage(JSON.stringify({ tx: tx, opt: opt }));
+          });
+        }
+      });
+
+      window.addEventListener("equilibrium:ready", function() {
+        window.Equilibrium.Widgets.Position(document.querySelector("#root"));
+      });
+    </script>
+    <script async src="/inject.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

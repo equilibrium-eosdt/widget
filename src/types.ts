@@ -36,6 +36,7 @@ export interface Context {
 }
 
 export interface EquilibriumInjector {
+  iframeMode: boolean;
   isReady: () => boolean;
   init: (
     accountName: string,

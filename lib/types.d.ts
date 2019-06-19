@@ -30,6 +30,7 @@ export interface Context {
     events: EventEmitter;
 }
 export interface EquilibriumInjector {
+    iframeMode: boolean;
     isReady: () => boolean;
     init: (accountName: string, endpoint: string, onTransaction: (txObj: TxObj, options: TxOpt) => Promise<void>) => void;
     injectEOSClient: (client: Client) => void;

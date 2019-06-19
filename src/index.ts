@@ -42,39 +42,19 @@ const CreatePosition: WidgetDef<State, Context> = {
   },
 };
 
+const iframeOptions = {
+  accountName: "",
+  endpoint: "",
+};
+
 const context: Context = {
   events: new EventEmitter(),
 };
 
-const injectPositionWidget = (el: HTMLElement) => {
-  if (!el) {
-    return null;
-  }
-
-  setContainerStyle(el);
-  return new Widget<State, Context>(el, CreatePosition, context);
-};
-
 const Equilibrium: EquilibriumInjector = {
+  iframeMode: false,
   isReady: () => !!context.client,
-
-  init: (
-    accountName: string,
-    endpoint: string,
-    onTransaction: (txObj: any, options: any) => Promise<void>,
-  ) => {
-    Equilibrium.injectEOSClient(<any>{
-      getAccount: () => ({
-        name: accountName,
-      }),
-      rpc: new JsonRpc(endpoint),
-      api: {
-        transact: async (txObj: any, options: any) =>
-          await onTransaction(txObj, options),
-      },
-    });
-  },
-
+  init,
   setLocale,
 
   injectEOSClient: (client: Client) => {
@@ -88,6 +68,56 @@ const Equilibrium: EquilibriumInjector = {
   },
 };
 
+function injectPositionWidget(el: HTMLElement) {
+  if (!el) {
+    return null;
+  }
+
+  if (Equilibrium.iframeMode) {
+    el.innerHTML = `<iframe src="https://cdn.eosdt.com/widget/iframe.html#${iframeOptions.accountName}@${iframeOptions.endpoint}"></iframe>`;
+    return null;
+  } else {
+    setContainerStyle(el);
+    return new Widget<State, Context>(el, CreatePosition, context);
+  }
+}
+
+function init(
+  accountName: string,
+  endpoint: string,
+  onTransaction: (txObj: any, options: any) => Promise<void>,
+) {
+  if (Equilibrium.iframeMode) {
+    iframeOptions.accountName = accountName;
+    iframeOptions.endpoint = endpoint;
+
+    window.addEventListener("message", async (e: Event) => {
+      if ((<any>e).data) {
+        try {
+          const data = JSON.parse((<any>e).data);
+          const { tx, opt } = data;
+
+          if (tx) {
+            await onTransaction(tx, opt);
+          }
+        } catch (err) {
+          // do nothing for now
+        }
+      }
+    });
+  } else {
+    Equilibrium.injectEOSClient(<any>{
+      getAccount: () => ({
+        name: accountName,
+      }),
+      rpc: new JsonRpc(endpoint),
+      api: {
+        transact: async (txObj: any, options: any) =>
+          await onTransaction(txObj, options),
+      },
+    });
+  }
+}
 export default Equilibrium;
 
 export { setStyles };
