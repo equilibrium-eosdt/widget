@@ -201,26 +201,37 @@ const ManagePosition: WidgetDef<MPState, Context> = {
 
   onUpdate: async (w) => {
     const state = w.state;
-    const { params, rates, settings, balance } = state;
+    const { params, rates, settings, balance, positions } = state;
 
     const rate = rates.find((rate: any) => rate.rate.indexOf("USD") >= 0);
+
     if (!rate) {
-      throw new Error(t`No USD rate`);
+      return;
     }
+
     const { stability_rate } = params;
-    const { outstanding, collateral } = state.positions![0];
+
+    if (!positions![0]) {
+      return;
+    }
+
+    const { outstanding, collateral } = positions![0];
+
     const k = balance
       ? parseFloat(balance[0]) / parseFloat(params.total_collateral)
       : 0;
+
     const eos = parseFloat(collateral) * k;
     const eosdt = parseFloat(outstanding) * parseFloat(stability_rate);
     const usd = eos * parseFloat(rate.rate);
     const minLtv = parseFloat(settings.critical_ltv);
     const maxEos = (usd - eosdt * minLtv) / parseFloat(rate.rate);
     const maxEosdt = (usd - minLtv * eosdt) / minLtv;
+
     if (maxEos !== w.state.maxEos || maxEosdt !== w.state.maxEosdt) {
       w.update({ maxEos, maxEosdt });
     }
+
     if (eosdt !== w.state.eosdt) {
       w.update({ eosdt });
     }
