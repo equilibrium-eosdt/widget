@@ -9,7 +9,7 @@
 
         if (window.top && account && endpoint) {
           window.Equilibrium.init(account, endpoint, function(tx, opt) {
-            window.top.postMessage(JSON.stringify({ tx: tx, opt: opt }));
+            window.top.postMessage(JSON.stringify({ tx: tx, opt: opt }), "*");
           });
         }
       });

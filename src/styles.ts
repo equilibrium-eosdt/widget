@@ -8,6 +8,11 @@ const containerStyle = (id: string) => `
 `;
 
 const styles = `
+
+  h2 {
+  font-weight: 400;
+  }
+
   .equil-position-manage {
     display: flex;
   }
@@ -187,6 +192,18 @@ const styles = `
     line-height: 18px;
     color: #002446;
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+  input[type=number] {
+    -moz-appearance:textfield;
+}
+
 
   .equil-position-manage__input--error {
     border-color: red;

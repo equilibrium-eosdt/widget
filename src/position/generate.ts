@@ -13,7 +13,6 @@ export default function GenerateEOSDT(deps: {
   maxToGenerateFunc?: () => number | undefined;
 }) {
   const { account, contract, maxToGenerateFunc } = deps;
-
   return <WidgetDef<GenerateState, Context>>{
     state: {},
 
@@ -21,7 +20,8 @@ export default function GenerateEOSDT(deps: {
       w.update({
         form: Form({
           id: "generate-eosdt",
-          className: "equil-position-manage__form equil-position-manage__form--tab",
+          className:
+            "equil-position-manage__form equil-position-manage__form--tab",
           fields: ["amount"],
           validate: {
             amount: (value: string) => {
@@ -42,7 +42,7 @@ export default function GenerateEOSDT(deps: {
                 account.name,
               );
 
-              const amount = Number(data.get("deposit"));
+              const amount = Number(data.get("amount"));
 
               if (!positions.length) {
                 throw new Error(t`No position found`);

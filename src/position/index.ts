@@ -129,7 +129,7 @@ const ManagePosition: WidgetDef<MPState, Context> = {
       tabs: [
         {
           id: "deposit",
-          name: () => t`Deposit`,
+          name: () => t`Pledge`,
           type: DepositEOS({
             account,
             contract,
@@ -278,7 +278,7 @@ const ManagePosition: WidgetDef<MPState, Context> = {
       </div>
       <div class="equil-position-parameters equil-position-parameters--empty">
         <h2 class="equil-position-manage__title">${t`You don't have any positions yet`}</h2>
-          <span class="equil-position-parameters__title">${t`Deposit collateral and generate <br/>debt to get started`}</span>
+          <span class="equil-position-parameters__title">${t`Deposit collateral and generate <br/>EOSDT to get started`}</span>
       </div>`;
     }
 
@@ -294,7 +294,7 @@ const ManagePosition: WidgetDef<MPState, Context> = {
     const eosdt = parseFloat(outstanding) * parseFloat(stability_rate);
     const usd = eos * parseFloat(rate.rate);
     const minLtv = parseFloat(settings.critical_ltv);
-    const ltv = usd / eosdt;
+    const ltv = eosdt !== 0 ? usd / eosdt : 0;
     const minRate = (minLtv * eosdt) / eos;
     const maxEos = (usd - eosdt * minLtv) / parseFloat(rate.rate);
     const maxEosdt = (usd - minLtv * eosdt) / minLtv;
@@ -308,11 +308,11 @@ const ManagePosition: WidgetDef<MPState, Context> = {
         </h2>
         <div class="equil-position-actions__labels">
           <div class="equil-position-actions__label">
-            <span>${t`Collateral EOS`}</span>
+            <span>${t`EOS collateralized`}</span>
             <span class="equil-position-actions__value">${eos.toFixed(4)}</span>
           </div>
           <div class="equil-position-actions__label">
-            <span>${t`Debt EOSDT`}</span>
+            <span>${t`EOSDT generated`}</span>
             <span class="equil-position-actions__value">${eosdt.toFixed(
               2,
             )}</span>
@@ -329,7 +329,7 @@ const ManagePosition: WidgetDef<MPState, Context> = {
           ).toFixed()}%</span>
         </div>
         <div class="equil-position-parameters__item">
-          <span class="equil-position-parameters__title">${t`Liquidation price:`}</span>
+          <span class="equil-position-parameters__title">${t`Liquidation price of EOS:`}</span>
           <span class="equil-position-parameters__value">${minRate.toFixed(
             2,
           )}$</span>

@@ -122,7 +122,7 @@ ${fields
     }
     <input class="equil-position-manage__input ${
       state.error ? "equil-position-manage__input--error" : null
-    }"}" placeholder="0.00" type="text" name="${name}" />
+    }"}" placeholder="0.00" type="number" autocomplete="off" name="${name}" />
   </div>`,
   )
   .join("")}

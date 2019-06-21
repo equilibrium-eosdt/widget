@@ -19,6 +19,12 @@ const CreatePosition: WidgetDef<State, Context> = {
   onInit: async (w) => {
     const { events, client } = w.ctx;
 
+    /* const balance = await client!.rpc.get_currency_balance(
+      "eosio.token",
+      `${account.name}`,
+      "EOS",
+    ); */
+
     events.on("account", (state: LoginState) => {
       const { loggedIn } = state;
       w.update({ loggedIn });
@@ -74,7 +80,9 @@ function injectPositionWidget(el: HTMLElement) {
   }
 
   if (Equilibrium.iframeMode) {
-    el.innerHTML = `<iframe src="https://cdn.eosdt.com/widget/iframe.html#${iframeOptions.accountName}@${iframeOptions.endpoint}"></iframe>`;
+    el.innerHTML = `<iframe src="https://cdn.eosdt.com/widget/iframe.html#${
+      iframeOptions.accountName
+    }@${iframeOptions.endpoint}"></iframe>`;
     return null;
   } else {
     setContainerStyle(el);
