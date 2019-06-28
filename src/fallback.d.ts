@@ -1,2 +1,2 @@
-declare module "scatterjs-core";
-declare module "scatterjs-plugin-eosjs2";
+declare module "@scatterjs/core";
+declare module "@scatterjs/eosjs2";

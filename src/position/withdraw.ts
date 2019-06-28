@@ -24,17 +24,24 @@ export default function WithdrawEOS(deps: {
           fields: ["amount"],
           validate: {
             amount: (value: string) => {
+              let error;
               const maxToWithdraw = maxToWithdrawFunc ? maxToWithdrawFunc() : 0;
+
               if (Number(value) > Number(maxToWithdraw)) {
                 const max = maxToWithdraw
                   ? Number(maxToWithdraw).toFixed(4)
                   : 0;
-                return t`EOS amount withdrawn should not be more than ${max}`;
+
+                error = t`EOS amount withdrawn should not be more than ${max}`;
               } else if (Number(value) > 100000000) {
-                return t`Withdraw amount cannot exceed 100000000.`;
-              } else return;
+                error = t`Withdraw amount cannot exceed 100000000.`;
+              }
+
+              w.ctx.events.emit('eos:update', error ? 0 : -Number(value));
+              return error;
             },
           },
+
           handler: async (data?: FormData) => {
             if (data) {
               const positions = await contract.getAllUserPositions(

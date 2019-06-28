@@ -25,15 +25,21 @@ export default function GenerateEOSDT(deps: {
           fields: ["amount"],
           validate: {
             amount: (value: string) => {
+              let error;
               const maxToGenerate = maxToGenerateFunc ? maxToGenerateFunc() : 0;
+
               if (Number(value) > 100000000) {
-                return t`Generate amount cannot exceed 100000000.`;
+                error = t`Generate amount cannot exceed 100000000.`;
               } else if (Number(value) > Number(maxToGenerate)) {
                 const max = maxToGenerate
                   ? Number(maxToGenerate).toFixed(4)
                   : 0;
-                return t`Generate amount cannot exceed ${max} EOSDT`;
-              } else return;
+
+                error = t`Generate amount cannot exceed ${max} EOSDT`;
+              }
+
+              w.ctx.events.emit('eosdt:update', error ? 0 : Number(value));
+              return error;
             },
           },
           handler: async (data?: FormData) => {

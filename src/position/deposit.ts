@@ -21,19 +21,23 @@ export default function DepositEOS(deps: {
       w.update({
         form: Form({
           id: "deposit-eos",
-          className: "equil-position-manage__form equil-position-manage__form--tab",
+          className:
+            "equil-position-manage__form equil-position-manage__form--tab",
           fields: ["amount"],
           validate: {
             amount: (value: string) => {
+              let error;
               const maxToDeposit = maxToDepositFunc ? maxToDepositFunc() : 0;
 
               if (Number(value) > 100000000) {
-                return t`Deposit amount cannot exceed 100000000.`;
-              }
-              if (Number(value) > Number(maxToDeposit)) {
+                error = t`Deposit amount cannot exceed 100000000.`;
+              } else if (Number(value) > Number(maxToDeposit)) {
                 const max = maxToDeposit ? Number(maxToDeposit).toFixed(4) : 0;
-                return t`Value should not exceed your balance of ${max} EOS`;
-              } else return;
+                error = t`Value should not exceed your balance of ${max} EOS`;
+              }
+
+              w.ctx.events.emit('eos:update', error ? 0 : Number(value));
+              return error;
             },
           },
           handler: async (data?: FormData) => {

@@ -12,5 +12,6 @@ export default function Tabs(params: {
     tabs: TabItem[];
     id: string;
     className?: string;
+    onSelect: () => Promise<void>;
 }): TemplateWidget<TabState, {}>;
 export {};

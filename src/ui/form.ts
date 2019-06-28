@@ -11,17 +11,31 @@ export interface FormState {
   onSubmit?: (e: Event) => Promise<void>;
   submitButton: ReturnType<typeof Button>;
   validate: { [name: string]: StateValidator };
+  update: { [name: string]: StateValidator }; // TODO for now a hack
+}
+
+interface Fields {
+  [field: string]: {
+    decimals: number;
+    label?: string;
+  };
 }
 
 export default function createForm(params: {
   id: string;
   className?: string;
-  fields: string[];
+  fields: string[] | Fields;
   handler: (data?: FormData) => Promise<void>;
   validate?: { [name: string]: Validator };
-  label?: string[];
 }) {
-  const { id, className, fields, handler, validate, label } = params;
+  const { id, className, handler, validate } = params;
+
+  const fields = Array.isArray(params.fields)
+    ? params.fields.reduce(
+        (fields, name) => ({ ...fields, [name]: { decimals: 2, label: "" } }),
+        {},
+      )
+    : params.fields;
 
   const Form: WidgetDef<FormState, {}> = {
     state: {
@@ -32,6 +46,7 @@ export default function createForm(params: {
         className: "equil-position-manage__button",
       }),
       validate: {},
+      update: {},
     },
 
     onInit: async (w) => {
@@ -42,6 +57,16 @@ export default function createForm(params: {
       }
 
       w.update({
+        update: validate
+          ? Object.keys(validate).reduce(
+              (prev, field) => ({
+                ...prev,
+                [field]: (e: Event) =>
+                  validate[field]((<HTMLInputElement>e.target!).value),
+              }),
+              {},
+            )
+          : {}, // TODO fix this hack
         validate: validate
           ? Object.keys(validate).reduce(
               (prev, field) => ({
@@ -50,6 +75,7 @@ export default function createForm(params: {
                   const error = validate[field](
                     (<HTMLInputElement>e.target!).value,
                   );
+
                   if (error) {
                     w.update({ error });
                   }
@@ -87,12 +113,16 @@ export default function createForm(params: {
         el.addEventListener("submit", onSubmit);
       }
 
-      for (let field of fields) {
+      for (let field of Object.keys(fields)) {
         const input = w.find(`input[name=${field}]`);
 
         if (input) {
           if (w.state.validate[field]) {
             input.addEventListener("change", w.state.validate[field]);
+          }
+
+          if (w.state.update[field]) {
+            input.addEventListener("keyup", w.state.update[field]);
           }
 
           if (state.pending && !w.state.pending && !w.state.error) {
@@ -105,32 +135,29 @@ export default function createForm(params: {
     render: (state, r) => {
       return r`
 ${
-  state.pending
-    ? `<span class="equil-position-manage__pending">Loading...</span>`
-    : ""
-}
-${fields
-  .map(
-    (name, i) =>
-      `<div class="equil-position-manage__input-wrapper">
-    ${
-      label
-        ? `<label class="equil-position-manage__input-label">${
-            label[i]
-          }</label>`
-        : ""
-    }
+        state.pending
+          ? `<span class="equil-position-manage__pending">Loading...</span>`
+          : ""
+      }
+${Object.keys(fields)
+        .map(
+          (name) =>
+            `<div class="equil-position-manage__input-wrapper">
+    ${fields[name].label &&
+      `<label class="equil-position-manage__input-label">${
+        fields[name].label
+      }</label>`}
     <input class="equil-position-manage__input ${
       state.error ? "equil-position-manage__input--error" : null
-    }"}" placeholder="0.00" type="number" autocomplete="off" name="${name}" />
+    }" placeholder="0.00" type="number" autocomplete="off" name="${name}" step="0.0001" />
   </div>`,
-  )
-  .join("")}
+        )
+        .join("")}
 ${
-  state.error
-    ? `<span class="equil-position-manage__error">${state.error}</span>`
-    : ""
-}
+        state.error
+          ? `<span class="equil-position-manage__error">${state.error}</span>`
+          : ""
+      }
 ${state.submitButton}
 `;
     },

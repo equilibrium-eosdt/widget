@@ -1,6 +1,6 @@
 import { Api, JsonRpc } from "eosjs";
-import ScatterJS from "scatterjs-core";
-import ScatterEOS from "scatterjs-plugin-eosjs2";
+import ScatterJS from "@scatterjs/core";
+import ScatterEOS from "@scatterjs/eosjs2";
 
 const network = {
   blockchain: "eos",

@@ -176,7 +176,7 @@ export class Widget<S, C = undefined> {
     return null;
   }
 
-  public update(state: Partial<S>) {
+  public update(state: Partial<S> = {}) {
     this.sig!.wait()
       .then(() => {
         this.sig = new Signal();

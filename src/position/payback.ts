@@ -11,15 +11,15 @@ export default function PaybackEOSDT(deps: {
   account: Account;
   contract: Contract;
   getNUTAmount: (value: string) => number;
-  userBalanceNut: number;
-  userBalanceEosdt: number;
+  getUserBalanceEosdt?: () => number;
+  getUserBalanceNut?: () => number;
   availableToPayback?: () => number | undefined;
 }) {
   const {
     account,
     contract,
-    userBalanceEosdt,
-    userBalanceNut,
+    getUserBalanceEosdt,
+    getUserBalanceNut,
     getNUTAmount,
     availableToPayback,
   } = deps;
@@ -36,23 +36,37 @@ export default function PaybackEOSDT(deps: {
           fields: ["amount"],
           validate: {
             amount: (value: string) => {
+              let error;
               const nutAmount = getNUTAmount(value);
+
+              const userBalanceEosdt = getUserBalanceEosdt
+                ? getUserBalanceEosdt()
+                : 0;
+              const userBalanceNut = getUserBalanceNut
+                ? getUserBalanceNut()
+                : 0;
+
               const availableAmount = availableToPayback
                 ? availableToPayback()
                 : 0;
+
               const paybackFee = (Math.ceil(nutAmount * 10000) / 10000).toFixed(
                 4,
               );
+
               if (Number(value) > Number(100000000)) {
-                return t`Payback amount cannot exceed 100000000.`;
+                error = t`Payback amount cannot exceed 100000000.`;
               } else if (Number(availableAmount) <= 0 && Number(value) > 0) {
-                return t`There's nothing to payback`;
+                error = t`There's nothing to payback`;
               } else if (userBalanceNut < Number(paybackFee)) {
-                return t`Your NUT balance is less than ${paybackFee}`;
+                error = t`Your NUT balance is less than ${paybackFee}`;
               } else if (nutAmount > userBalanceEosdt) {
                 const max = userBalanceEosdt ? userBalanceEosdt.toFixed(4) : 0;
-                return t`You can't payback more than ${max}`;
-              } else return;
+                error = t`You can't payback more than ${max}`;
+              }
+
+              w.ctx.events.emit("eosdt:update", error ? 0 : -Number(value));
+              return error;
             },
           },
           handler: async (data?: FormData) => {

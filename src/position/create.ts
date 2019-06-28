@@ -24,8 +24,17 @@ export default function CreatePosition(deps: {
         form: Form({
           id: "create-position",
           className: "equil-position-manage__form",
-          fields: ["deposit", "generate"],
-          label: ["I want to deposit EOS", "And generate EOSDT"],
+          fields: {
+            deposit: {
+              decimals: 4,
+              label: t`I want to deposit EOS`,
+            },
+            generate: {
+              decimals: 2,
+              label: t`And generate EOSDT`,
+            },
+          },
+          // TODO add validation
           // buttonText: "Create position",
           handler: async (data?: FormData) => {
             if (data) {

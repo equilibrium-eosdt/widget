@@ -1,6 +1,6 @@
 {
   "name": "@eosdt/widget",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
@@ -8,11 +8,24 @@
     "start": "webpack-serve",
     "build:dist": "webpack --mode production && cp -r public dist",
     "build:lib": "tsc",
-    "build": "npm run build:dist && npm run build:lib"
+    "build": "npm run build:dist && npm run build:lib",
+    "test": "nyc mocha -r ts-node/register -r source-map-support/register src/**/*.test.ts --timeout=3000"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ]
   },
   "devDependencies": {
     "html-webpack-plugin": "^3.2.0",
+    "mocha": "6.1.4",
+    "nyc": "14.1.1",
+    "source-map-support": "0.5.12",
     "ts-loader": "^5.3.3",
+    "ts-node": "8.3.0",
     "typescript": "^3.2.2",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
@@ -21,8 +34,10 @@
   "dependencies": {
     "@babel/runtime": "7.4.5",
     "@eosdt/eosdt-js": "^0.4.22",
-    "eosjs": "20.0.0",
-    "scatterjs-core": "2.7.18",
-    "scatterjs-plugin-eosjs2": "1.5.0"
+    "@scatterjs/core": "2.7.26",
+    "@scatterjs/eosjs2": "1.5.8",
+    "@scatterjs/lynx": "1.6.17",
+    "@types/mocha": "5.2.7",
+    "eosjs": "20.0.0"
   }
 }

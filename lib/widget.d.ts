@@ -41,6 +41,6 @@ export declare class Widget<S, C = undefined> {
     private renderTemplate;
     attach(el: HTMLElement): void;
     find(cssSelector?: string): HTMLElement | null;
-    update(state: Partial<S>): void;
+    update(state?: Partial<S>): void;
 }
 export {};

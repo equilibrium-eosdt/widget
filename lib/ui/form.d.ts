@@ -10,16 +10,24 @@ export interface FormState {
     validate: {
         [name: string]: StateValidator;
     };
+    update: {
+        [name: string]: StateValidator;
+    };
+}
+interface Fields {
+    [field: string]: {
+        decimals: number;
+        label?: string;
+    };
 }
 export default function createForm(params: {
     id: string;
     className?: string;
-    fields: string[];
+    fields: string[] | Fields;
     handler: (data?: FormData) => Promise<void>;
     validate?: {
         [name: string]: Validator;
     };
-    label?: string[];
 }): {
     id: string;
     className: string | undefined;
